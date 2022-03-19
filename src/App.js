@@ -10,9 +10,15 @@ function App() {
   const [assetsList, setAssetsList] = useState("");
 
   useEffect(() => {
-    fetch('https://alert-scraper.herokuapp.com/get_assets_for_user?user_email=' + userEmail)
-      .then(response => response.json())
-      .then(data => setAssetsList(data));
+    console.log("stam4")
+
+    // // fetch('https://alert-scraper.herokuapp.com/get_assets_for_user?user_email=' + userEmail)
+    // fetch("https://alert-scraper.herokuapp.com/test")
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data);
+    //     setAssetsList(JSON.stringify(data))
+    //   }).catch(reason => console.log(reason));
   }, [userEmail, assetUrl]);
 
   return (
@@ -32,10 +38,7 @@ function App() {
           }}
           cookiePolicy={'single_host_origin'}
         />
-        : ""}
-
-      {isLoggedIn ?
-        <form>
+        : <form>
           <p>
             Email:
             <input className='input' name="email" type="text" value={userEmail} onChange={(event) => {
@@ -61,7 +64,7 @@ function App() {
                 body: JSON.stringify({"url": assetUrl, "user_email": userEmail})
               };
               fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
-                .then(response => response.json())
+                .then(response => response)
                 .then(data => {
                   console.log('Success:', data);
                   setAssetUrl("")
@@ -77,8 +80,8 @@ function App() {
               e.preventDefault();
 
               fetch('https://alert-scraper.herokuapp.com/start')
-                .then(response => response.json())
-                .then(data => setAssetsList(data));
+                .then(response => response)
+                .then(data => console.log("start " + data));
             }}>
               Start
             </button>
@@ -87,14 +90,53 @@ function App() {
               e.preventDefault();
 
               fetch('https://alert-scraper.herokuapp.com/stop')
-                .then(response => response.json())
-                .then(data => setAssetsList(data));
+                .then(response => response)
+                .then(data => console.log("stop " + data));
             }}>
               Stop
             </button>
+
+            <button className='button' onClick={(e) => {
+              e.preventDefault();
+              fetch('https://alert-scraper.herokuapp.com/test/')
+                .then(body => body.json())
+                .then(data => {
+                  console.log('Success test:', data);
+                })
+                .catch((error) => {
+                  console.error('Error test:', error);
+                });
+            }}>
+              Test
+            </button>
+
+            <button className='button' onClick={(e) => {
+              e.preventDefault();
+
+              const params = {
+                user_email: userEmail,
+              };
+              const options = {
+                method: 'POST',
+                body: JSON.stringify(params),
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+              };
+
+              console.log('before', JSON.stringify(params));
+              fetch('https://alert-scraper.herokuapp.com/get_assets_for_user/', options)
+                .then(response => response.json())
+                .then(response => {
+                  setAssetsList(JSON.stringify(response))
+                  console.log('uvuv', response);
+                });
+            }}>
+              List
+            </button>
           </div>
-        </form> :
-        ""}
+        </form>}
 
       <p>
         {assetsList}
