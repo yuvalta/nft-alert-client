@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/nft-alert-client/static/css/main.073c9b0a.css",
-    "main.js": "/nft-alert-client/static/js/main.581de255.js",
+    "main.js": "/nft-alert-client/static/js/main.bc116578.js",
     "static/js/787.6c34d59f.chunk.js": "/nft-alert-client/static/js/787.6c34d59f.chunk.js",
     "index.html": "/nft-alert-client/index.html",
     "main.073c9b0a.css.map": "/nft-alert-client/static/css/main.073c9b0a.css.map",
-    "main.581de255.js.map": "/nft-alert-client/static/js/main.581de255.js.map",
+    "main.bc116578.js.map": "/nft-alert-client/static/js/main.bc116578.js.map",
     "787.6c34d59f.chunk.js.map": "/nft-alert-client/static/js/787.6c34d59f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.581de255.js"
+    "static/js/main.bc116578.js"
   ]
 }
