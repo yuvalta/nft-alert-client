@@ -12,7 +12,7 @@ const AssetItem = props => {
         <button className="button" onClick={(e) => {
           e.preventDefault();
 
-          deleteUserFromAsset(asset, props.userEmail)
+          deleteUserFromAsset(asset, props.userEmail, props.getUsersFunction)
         }}>
           Delete Asset
         </button>
@@ -31,7 +31,7 @@ const AssetItem = props => {
     return ""
   }
 
-  function deleteUserFromAsset(asset, userEmail) {
+  function deleteUserFromAsset(asset, userEmail, getUsersFunction) {
     const deleteParams = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -43,6 +43,7 @@ const AssetItem = props => {
       .then(response => response)
       .then(data => {
         console.log('Success:', data);
+        getUsersFunction(userEmail)
       })
       .catch((error) => {
         console.error('Error:', error);

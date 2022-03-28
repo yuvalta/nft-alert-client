@@ -6,12 +6,13 @@ import {Typography} from "@material-ui/core";
 import background_image from "./assets/background.png";
 import AssetItem from "./AssetItem";
 
-
 function App() {
   const [userEmail, setUserEmail] = useState("");
   const [assetUrl, setAssetUrl] = useState("");
+  const [userName, setUserName] = useState("");
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [assetsList, setAssetsList] = useState([]);
+  const [error, setError] = useState("");
 
 
   useEffect(() => {
@@ -27,8 +28,8 @@ function App() {
       width: '100%',
       height: '100vh',
     }}>
-      <Typography variant="h2">
-        Alerter
+      <Typography variant="h4">
+        {userName == "" ? "Please login with your google account" : "Yo " + userName + "!"}
       </Typography>
       <div className="container">
         {!isLoggedIn ?
@@ -36,9 +37,10 @@ function App() {
             clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
             buttonText="Login"
             onSuccess={(response) => {
-              console.log(response.Du.tv);
+              console.log(response);
               setLoggedIn(true)
               setUserEmail(response.Du.tv)
+              setUserName(response.Du.VX)
             }}
             onFailure={(response) => {
               console.log(response);
@@ -53,7 +55,7 @@ function App() {
               <input className='input' disabled name="email" type="text" value={userEmail}/>
             </p>
 
-            <br/>
+
             <p>
               Asset URL:
               <input className='input' name="asset_url" type="text" value={assetUrl} onChange={(event) => {
@@ -61,11 +63,14 @@ function App() {
               }}/>
             </p>
 
+            <Typography variant="colorError">{error}</Typography>
+
             <div className='send-form-button'>
               <button className='button' onClick={(e) => {
                 e.preventDefault();
-
-                upsertAsset()
+                if (validateAssetURL(assetUrl)) {
+                  upsertAsset()
+                }
               }}>
                 Send
               </button>
@@ -104,7 +109,7 @@ function App() {
 
         <div>
           <br/>
-          <AssetItem assets={assetsList} userEmail={userEmail}/>
+          <AssetItem assets={assetsList} userEmail={userEmail} getUsersFunction={getListFromDB}/>
         </div>
       </div>
     </div>
@@ -118,9 +123,10 @@ function App() {
       body: JSON.stringify({"url": assetUrl, "user_email": userEmail})
     };
     fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
-      .then(response => response)
+      .then(response => response.json())
       .then(data => {
-        console.log('Success:', data);
+        setError(data["error"])
+        console.log('Success upsert_asset:', data);
         setAssetUrl("")
         getListFromDB(userEmail)
       })
@@ -161,6 +167,22 @@ function App() {
         console.log('uvuv', JSON.parse(JSON.stringify(response)));
         setAssetsList(JSON.parse(JSON.stringify(response)))
       });
+  }
+
+
+  function validateAssetURL(input_asset_url) {
+    if (input_asset_url.length === 0) {
+      setError("Enter a value")
+      return false
+    } else if (!/[A-Za-z0-9-_]/.test(input_asset_url)) {
+      setError("Only english letters")
+      return false
+    } else {
+      setError("")
+    }
+
+    setAssetUrl(input_asset_url)
+    return true
   }
 
 }

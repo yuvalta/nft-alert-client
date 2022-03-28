@@ -25,7 +25,6 @@ p {
     font-size: 1.5vh;
     color: indianred;
     opacity: 0.7;
-    font-family: Rubik, Ariel;
 }
 
 .test_result_progressbar_container {
@@ -304,86 +303,5 @@ p {
     align-items: stretch;
 }
 
-
-@font-face {
-    font-family: Rubik;
-    src: url(./fonts/Rubik_300.ttf);
-}
-
-@keyframes ldio-9o242xdhv0o {
-    0% {
-        transform: rotate(0)
-    }
-    100% {
-        transform: rotate(360deg)
-    }
-}
-
-.ldio-9o242xdhv0o div {
-    box-sizing: border-box !important
-}
-
-.ldio-9o242xdhv0o > div {
-    position: absolute;
-    width: 175.68px;
-    height: 175.68px;
-    top: 34.16px;
-    left: 34.16px;
-    border-radius: 50%;
-    border: 19.52px solid #000;
-    border-color: #71916d transparent #71916d transparent;
-    animation: ldio-9o242xdhv0o 1.2048192771084336s linear infinite;
-}
-
-.ldio-9o242xdhv0o > div:nth-child(2) {
-    border-color: transparent
-}
-
-.ldio-9o242xdhv0o > div:nth-child(2) div {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform: rotate(45deg);
-}
-
-.ldio-9o242xdhv0o > div:nth-child(2) div:before, .ldio-9o242xdhv0o > div:nth-child(2) div:after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 19.52px;
-    height: 19.52px;
-    top: -19.52px;
-    left: 58.56px;
-    background: #71916d;
-    border-radius: 50%;
-    box-shadow: 0 156.16px 0 0 #71916d;
-}
-
-.ldio-9o242xdhv0o > div:nth-child(2) div:after {
-    left: -19.52px;
-    top: 58.56px;
-    box-shadow: 156.16px 0 0 0 #71916d;
-}
-
-.loadingio-spinner-dual-ring-4pm97gr5npk {
-    width: 244px;
-    height: 244px;
-    display: inline-block;
-    overflow: hidden;
-    background: none;
-}
-
-.ldio-9o242xdhv0o {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform: translateZ(0) scale(1);
-    backface-visibility: hidden;
-    transform-origin: 0 0; /* see note above */
-}
-
-.ldio-9o242xdhv0o div {
-    box-sizing: content-box;
-}
 
 
