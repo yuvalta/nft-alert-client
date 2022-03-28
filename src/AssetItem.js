@@ -1,25 +1,37 @@
 import React from 'react';
+import {Card, CardContent, IconButton, ListItem, ListItemText, Typography} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const AssetItem = props => {
   return (
     <div>
-      {Object.entries(props.assets).map(asset => <div>
+      {Object.keys(props.assets).length > 0 ?
+        <Card elevation={8}>
+          <CardContent>
+            <Typography variant="h5">
+              My assets
+            </Typography>
+            <div>
+              {Object.entries(props.assets).map(asset =>
+                <ListItem
+                  key={props.assets}
+                  disableGutters
+                  secondaryAction={
+                    <IconButton aria-label="delete" color="primary">
+                      <DeleteIcon onClick={(e) => {
+                        e.preventDefault();
 
-        <a target="_blank"
-           href={stripAssetURL(asset.toString())}>{stripAssetURL(asset.toString())}
-        </a>
-
-        <button className="button" onClick={(e) => {
-          e.preventDefault();
-
-          deleteUserFromAsset(asset, props.userEmail, props.getUsersFunction)
-        }}>
-          Delete Asset
-        </button>
-
-        <br/><br/>
-
-      </div>)}
+                        deleteUserFromAsset(asset, props.userEmail, props.getUsersFunction)
+                      }}/>
+                    </IconButton>}>
+                  <a target="_blank"
+                     href={stripAssetURL(asset.toString())}>{stripAssetURL(asset.toString())}
+                  </a>
+                </ListItem>
+              )}
+            </div>
+          </CardContent>
+        </Card> : ""}
     </div>
   );
 

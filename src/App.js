@@ -1,10 +1,11 @@
-import './App.css';
 import GoogleLogin from "react-google-login";
 import React, {useEffect, useState} from "react";
 import {Typography} from "@material-ui/core";
+import './stylesheet.css'
+import logo from "./assets/pelican_logo.png"
 
-import background_image from "./assets/background.png";
 import AssetItem from "./AssetItem";
+import {Button, Input, Stack, TextField} from "@mui/material";
 
 function App() {
   const [userEmail, setUserEmail] = useState("");
@@ -20,100 +21,99 @@ function App() {
   }, [userEmail]);
 
   return (
-    <div className="user-form-container" style={{
-      backgroundImage: `url(${background_image})`,
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      width: '100%',
-      height: '100vh',
-    }}>
-      <Typography variant="h4">
-        {userName == "" ? "Please login with your google account" : "Yo " + userName + "!"}
-      </Typography>
-      <div className="container">
-        {!isLoggedIn ?
-          <GoogleLogin
-            clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-            buttonText="Login"
-            onSuccess={(response) => {
-              console.log(response);
-              setLoggedIn(true)
-              setUserEmail(response.Du.tv)
-              setUserName(response.Du.VX)
-            }}
-            onFailure={(response) => {
-              console.log(response);
-              setUserEmail(response)
-            }}
-            cookiePolicy={'single_host_origin'}
-          />
-          :
-          <form>
-            <p>
-              Email:
-              <input className='input' disabled name="email" type="text" value={userEmail}/>
-            </p>
+    <div className="container">
+      <div className="flex-item">
+        <div className="in-div-container-login">
+          <Typography variant="h4">
+            {userName == "" ? "Please login with your google account" : "Yo " + userName + "!"}
+          </Typography>
 
+          {!isLoggedIn ?
+            <GoogleLogin
+              clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
+              buttonText="Login"
+              onSuccess={(response) => {
+                console.log(response);
+                setLoggedIn(true)
+                setUserEmail(response.Du.tv)
+                setUserName(response.Du.VX)
+              }}
+              onFailure={(response) => {
+                console.log(response);
+                setUserEmail(response)
+              }}
+              cookiePolicy={'single_host_origin'}
+            />
+            :
+            <div>
 
-            <p>
-              Asset URL:
-              <input className='input' name="asset_url" type="text" value={assetUrl} onChange={(event) => {
-                setAssetUrl(event.target.value)
-              }}/>
-            </p>
+              <TextField fullWidth size="small" id="outlined" label="Your email" disabled value={userEmail} margin="normal"/>
 
-            <Typography variant="colorError">{error}</Typography>
+              <TextField fullWidth size="small" required id="outlined" label="Asset URL" value={assetUrl} margin="normal"
+                         onChange={(event) => {
+                           setAssetUrl(event.target.value)
+                         }}/>
 
-            <div className='send-form-button'>
-              <button className='button' onClick={(e) => {
-                e.preventDefault();
-                if (validateAssetURL(assetUrl)) {
-                  upsertAsset()
-                }
-              }}>
-                Send
-              </button>
+              <Typography variant="colorError">{error}</Typography>
 
-              <button className='button' onClick={(e) => {
-                e.preventDefault();
+              <br/><br/><br/>
 
-                startStopLoop("start")
-              }}>
-                Start
-              </button>
+              <Stack direction="row" spacing={2}>
+                <Button variant="contained" variant="contained" className='button' onClick={(e) => {
+                  e.preventDefault();
+                  if (validateAssetURL(assetUrl)) {
+                    upsertAsset()
+                  }
+                }}>
+                  Send
+                </Button>
 
-              <button className='button' onClick={(e) => {
-                e.preventDefault();
+                <Button variant="contained" variant="contained" className='button' onClick={(e) => {
+                  e.preventDefault();
 
-                startStopLoop("stop")
-              }}>
-                Stop
-              </button>
+                  startStopLoop("start")
+                }}>
+                  Start
+                </Button>
 
-              <button className='button' onClick={(e) => {
-                e.preventDefault();
-                startStopLoop("test")
-              }}>
-                Test
-              </button>
+                <Button variant="contained" variant="contained" className='button' onClick={(e) => {
+                  e.preventDefault();
 
-              <button className='button' onClick={(e) => {
-                e.preventDefault();
-                getListFromDB(userEmail)
-              }}>
-                List
-              </button>
-            </div>
-          </form>}
+                  startStopLoop("stop")
+                }}>
+                  Stop
+                </Button>
 
-        <div>
-          <br/>
-          <AssetItem assets={assetsList} userEmail={userEmail} getUsersFunction={getListFromDB}/>
+                <Button variant="contained" variant="contained" className='button' onClick={(e) => {
+                  e.preventDefault();
+                  startStopLoop("test")
+                }}>
+                  Test
+                </Button>
+
+                <Button variant="contained" variant="contained" className='button' onClick={(e) => {
+                  e.preventDefault();
+                  getListFromDB(userEmail)
+                }}>
+                  List
+                </Button>
+              </Stack>
+            </div>}
+
+          <div>
+            <br/>
+            <AssetItem assets={assetsList} userEmail={userEmail} getUsersFunction={getListFromDB}/>
+          </div>
         </div>
       </div>
-    </div>
 
+      <div className="flex-item-colored">
+        <div className="in-div-container-logo">
+          <img className="logo" src={logo}/>
+        </div>
+      </div>
+
+    </div>
   );
 
   function upsertAsset() {
