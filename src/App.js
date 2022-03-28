@@ -1,19 +1,10 @@
 import './App.css';
 import GoogleLogin from "react-google-login";
 import React, {useEffect, useState} from "react";
-import {
-  Grid,
-  CircularProgress,
-  Typography,
-  Button,
-  Tabs,
-  Tab,
-  TextField,
-  Fade,
-} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 
-import logo from "./assets/pelican_logo.png";
 import background_image from "./assets/background.png";
+import AssetItem from "./AssetItem";
 
 
 function App() {
@@ -42,7 +33,6 @@ function App() {
       <div className="container">
         {!isLoggedIn ?
           <GoogleLogin
-
             clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
             buttonText="Login"
             onSuccess={(response) => {
@@ -60,9 +50,7 @@ function App() {
           <form>
             <p>
               Email:
-              <input className='input' name="email" type="text" value={userEmail} onChange={(event) => {
-                setUserEmail(event.target.value)
-              }}/>
+              <input className='input' disabled name="email" type="text" value={userEmail}/>
             </p>
 
             <br/>
@@ -77,31 +65,15 @@ function App() {
               <button className='button' onClick={(e) => {
                 e.preventDefault();
 
-                const upsertParams = {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify({"url": assetUrl, "user_email": userEmail})
-                };
-                fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
-                  .then(response => response)
-                  .then(data => {
-                    console.log('Success:', data);
-                    setAssetUrl("")
-                    getListFromDB(userEmail)
-                  })
-                  .catch((error) => {
-                    console.error('Error:', error);
-                  });
+                upsertAsset()
               }}>
                 Send
               </button>
 
               <button className='button' onClick={(e) => {
                 e.preventDefault();
-                console.log('Started:');
-                fetch('https://alert-scraper.herokuapp.com/start')
-                  .then(response => response)
-                  .then(data => console.log("start " + data));
+
+                startStopLoop("start")
               }}>
                 Start
               </button>
@@ -109,23 +81,14 @@ function App() {
               <button className='button' onClick={(e) => {
                 e.preventDefault();
 
-                fetch('https://alert-scraper.herokuapp.com/stop')
-                  .then(response => response)
-                  .then(data => console.log("stop " + data));
+                startStopLoop("stop")
               }}>
                 Stop
               </button>
 
               <button className='button' onClick={(e) => {
                 e.preventDefault();
-                fetch('https://alert-scraper.herokuapp.com/test/')
-                  .then(body => body.json())
-                  .then(data => {
-                    console.log('Success test:', data);
-                  })
-                  .catch((error) => {
-                    console.error('Error test:', error);
-                  });
+                startStopLoop("test")
               }}>
                 Test
               </button>
@@ -140,21 +103,40 @@ function App() {
           </form>}
 
         <div>
-          {Object.entries(assetsList).map(asset =>
-            <a target="_blank"
-               href={stripAssetURL(asset.toString())}>{stripAssetURL(asset.toString())}<br/><br/></a>)}
+          <br/>
+          <AssetItem assets={assetsList} userEmail={userEmail}/>
         </div>
       </div>
     </div>
 
   );
 
-  function stripAssetURL(assetURL) {
-    if (assetURL.length > 0) {
-      return assetURL.substring(2)
-    }
+  function upsertAsset() {
+    const upsertParams = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({"url": assetUrl, "user_email": userEmail})
+    };
+    fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
+      .then(response => response)
+      .then(data => {
+        console.log('Success:', data);
+        setAssetUrl("")
+        getListFromDB(userEmail)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 
-    return ""
+  function startStopLoop(state) {
+    console.log(state);
+    fetch('https://alert-scraper.herokuapp.com/' + state)
+      .then(response => response)
+      .then(data => console.log(data))
+      .catch((error) => {
+        console.error('Error in startStopLoop:', error);
+      });
   }
 
   function getListFromDB(userEmail) {
