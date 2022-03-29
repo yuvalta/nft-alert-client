@@ -1,53 +1,50 @@
 import React from 'react';
-import {Card, CardContent, IconButton, ListItem, ListItemText, Typography} from "@mui/material";
+import {Card, CardContent, IconButton, ListItem, ListItemText, Stack, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const AssetItem = props => {
   return (
     <div>
       {Object.keys(props.assets).length > 0 ?
-        <Card elevation={8}>
+        <Card elevation={3}>
           <CardContent>
-            <Typography variant="h5">
-              My assets
-            </Typography>
-            <div>
-              {Object.entries(props.assets).map(asset =>
-                <ListItem
-                  key={props.assets}
-                  disableGutters
-                  secondaryAction={
-                    <IconButton aria-label="delete" color="primary">
-                      <DeleteIcon onClick={(e) => {
-                        e.preventDefault();
+              <Typography variant="h5">
+                My assets - {Object.keys(props.assets).length}
+              </Typography>
+              <div>
+                {Object.values(props.assets).map(asset =>
+                  <ListItem
+                    disableGutters
+                    secondaryAction={
+                      <IconButton aria-label="delete" color="primary">
+                        <DeleteIcon onClick={(e) => {
+                          e.preventDefault();
 
-                        deleteUserFromAsset(asset, props.userEmail, props.getUsersFunction)
-                      }}/>
-                    </IconButton>}>
-                  <a target="_blank"
-                     href={stripAssetURL(asset.toString())}>{stripAssetURL(asset.toString())}
-                  </a>
-                </ListItem>
-              )}
-            </div>
+                          deleteUserFromAsset(asset["url"], props.userEmail, props.getUsersFunction)
+                        }}/>
+                      </IconButton>}>
+                    <Stack direction="row" spacing={3}>
+                      <a target="_blank"
+                         href={asset["url"]}>{asset["url"]}
+                      </a>
+                      <Typography variant="body1" color={asset["price"].toString() === "No price!" ? "red" : "green"}>
+                        {asset["price"]}
+                      </Typography>
+                    </Stack>
+                  </ListItem>
+                )}
+              </div>
           </CardContent>
-        </Card> : ""}
+        </Card>
+        : ""}
     </div>
   );
 
-  function stripAssetURL(assetURL) {
-    if (assetURL.length > 0) {
-      return assetURL.substring(2)
-    }
-
-    return ""
-  }
-
-  function deleteUserFromAsset(asset, userEmail, getUsersFunction) {
+  function deleteUserFromAsset(assetURL, userEmail, getUsersFunction) {
     const deleteParams = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({"url": stripAssetURL(asset.toString()), "user_email": userEmail})
+      body: JSON.stringify({"url": assetURL, "user_email": userEmail})
     };
 
     console.log('deleteParams:', deleteParams);
@@ -62,5 +59,6 @@ const AssetItem = props => {
       });
   }
 }
+;
 
 export default AssetItem;

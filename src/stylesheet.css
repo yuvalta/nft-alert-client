@@ -1,26 +1,18 @@
-h1 {
-    flex: 1;
-    font-size: 5vh;
-    font-family: Rubik, Ariel, serif;
-}
-
-p {
-    flex: 1;
-    font-size: 3vh;
-    color: #000000;
-    opacity: 0.7;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-
-}
-
 .in-div-container-login {
     flex-direction: column;
-    height: 100%;
+    height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+}
+
+.div-card-content {
+    flex-direction: column;
+    height: 100vh;
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    overflow-y: scroll;
 }
 
 .in-div-container-logo {
