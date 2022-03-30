@@ -2,11 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Dashboard from "./Dashboard";
+import {UserProvider} from "./UserContext";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <UserProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="nft-alert-client/" element={<App/>}/>
+        <Route path="nft-alert-client/dashboard" element={<Dashboard/>}/>
+      </Routes>
+    </BrowserRouter>
+  </UserProvider>,
   document.querySelector("#root"));
 
 // If you want to start measuring performance in your app, pass a function
