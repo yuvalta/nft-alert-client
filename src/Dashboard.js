@@ -30,99 +30,95 @@ function Dashboard() {
     getListFromDB(userEmail)
   }, [userEmail]);
 
-  function logOutUser() {
-    setLoggedIn(false)
-    setUserEmail("")
-    setUserName("")
-  }
-
   if (isLoggedIn)
     return (
       <div className="in-div-container-login">
-        <div>
+        <div className="dashboard-item">
           <GoogleLogout
             buttonText="Logout"
             onLogoutSuccess={(response) => {
               logOutUser()
-
               navigate('/nft-alert-client/');
-            }}
-          />
+            }}/>
 
-          <Typography variant="h4">
-            {"Yo " + userName + "!"}
-          </Typography>
+          <div className="dashboard-info-container">
+            <div className="dashboard-info">
+              <Typography variant="h4">
+                {"Yo " + userName + "!"}
+              </Typography>
 
-          <br/><br/>
-          <div>
-            <TextField fullWidth size="small" id="outlined" label="Your email" disabled value={userEmail}
-                       margin="normal"/>
+              <br/>
+              <div>
+                <TextField fullWidth size="small" id="outlined" label="Your email" disabled value={userEmail}
+                           margin="normal"/>
 
-            <TextField fullWidth size="small" required id="outlined" label="Asset URL" value={assetUrl}
-                       margin="normal"
-                       onChange={(event) => {
-                         setAssetUrl(event.target.value)
-                       }}/>
+                <TextField fullWidth size="small" required id="outlined" label="Asset URL" value={assetUrl}
+                           margin="normal"
+                           onChange={(event) => {
+                             setAssetUrl(event.target.value)
+                           }}/>
 
-            <Typography variant="colorError">{error}</Typography>
+                <Typography variant="colorError">{error}</Typography>
 
-            <br/><br/><br/>
+                <br/><br/><br/>
 
-            <Stack direction="row" spacing={2}>
-              <Button variant="contained" className='button' onClick={(e) => {
-                e.preventDefault();
-                if (validateAssetURL(assetUrl)) {
-                  upsertAsset(assetUrl)
-                }
-              }}>
-                Send
-              </Button>
+                <Stack direction="row" spacing={2}>
+                  <Button variant="contained" className='button' onClick={(e) => {
+                    e.preventDefault();
+                    if (validateAssetURL(assetUrl)) {
+                      upsertAsset(assetUrl)
+                    }
+                  }}>
+                    Send
+                  </Button>
 
-              <Button variant="contained" className='button' onClick={(e) => {
-                e.preventDefault();
+                  <Button variant="contained" className='button' onClick={(e) => {
+                    e.preventDefault();
 
-                startStopLoop("start")
-              }}>
-                Start
-              </Button>
+                    startStopLoop("start")
+                  }}>
+                    Start
+                  </Button>
 
-              <Button variant="contained" className='button' onClick={(e) => {
-                e.preventDefault();
+                  <Button variant="contained" className='button' onClick={(e) => {
+                    e.preventDefault();
 
-                startStopLoop("stop")
-              }}>
-                Stop
-              </Button>
+                    startStopLoop("stop")
+                  }}>
+                    Stop
+                  </Button>
 
-              {/*<Button variant="contained" className='button' onClick={(e) => {*/}
-              {/*  e.preventDefault();*/}
-              {/*  startStopLoop("test")*/}
-              {/*}}>*/}
-              {/*  Test*/}
-              {/*</Button>*/}
+                  {/*<Button variant="contained" className='button' onClick={(e) => {*/}
+                  {/*  e.preventDefault();*/}
+                  {/*  startStopLoop("test")*/}
+                  {/*}}>*/}
+                  {/*  Test*/}
+                  {/*</Button>*/}
 
-              <Button variant="contained" className='button' onClick={(e) => {
-                e.preventDefault();
-                getListFromDB(userEmail)
-              }}>
-                List
-              </Button>
+                  <Button variant="contained" className='button' onClick={(e) => {
+                    e.preventDefault();
+                    getListFromDB(userEmail)
+                  }}>
+                    List
+                  </Button>
 
-              <Button variant="contained" color="error" className='button' onClick={(e) => {
-                e.preventDefault();
+                  <Button variant="contained" color="error" className='button' onClick={(e) => {
+                    e.preventDefault();
 
-                explodeDB(100)
-              }}>
-                EXPLODE!
-              </Button>
+                    explodeDB(100)
+                  }}>
+                    EXPLODE!
+                  </Button>
 
-              <Button variant="contained" color="error" className='button' onClick={(e) => {
-                e.preventDefault();
-                deleteAll()
-              }}>
-                DELETE DB!
-              </Button>
-            </Stack>
+                  <Button variant="contained" color="error" className='button' onClick={(e) => {
+                    e.preventDefault();
+                    deleteAll()
+                  }}>
+                    DELETE DB!
+                  </Button>
+                </Stack>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -132,7 +128,19 @@ function Dashboard() {
         </div>
       </div>);
   else
-    return (<h2>Error getting you info!</h2>);
+    return (<div>
+      <h2>Error getting you info!</h2>
+      <h3>Redirecting to login page...</h3>
+      {sleep(2000)}
+    </div>);
+
+  function sleep(delay) {
+    let start = new Date().getTime();
+    while (new Date().getTime() < start + delay);
+    console.log("after")
+    logOutUser()
+    navigate('/nft-alert-client/');
+  }
 
   function upsertAsset(url) {
     const upsertParams = {
@@ -215,6 +223,13 @@ function Dashboard() {
 
     setAssetUrl(input_asset_url)
     return true
+  }
+
+  function logOutUser() {
+    setLoggedIn(false)
+    setUserEmail("")
+    setUserName("")
+    setAssetsList([])
   }
 
 }

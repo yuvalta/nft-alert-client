@@ -6,7 +6,7 @@ const AssetItem = props => {
   return (
     <div>
       {Object.keys(props.assets).length > 0 ?
-        <Card elevation={3}>
+        <Card elevation={4}>
           <CardContent>
               <Typography variant="h5">
                 My assets - {Object.keys(props.assets).length}
@@ -58,7 +58,6 @@ const AssetItem = props => {
         console.error('Error:', error);
       });
   }
-}
-;
+};
 
 export default AssetItem;
