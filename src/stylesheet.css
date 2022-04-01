@@ -17,6 +17,8 @@
     justify-content: stretch;
     align-items: center;
     overflow-y: scroll;
+    max-width: 100%;
+    text-overflow: ellipsis;
 }
 
 .in-div-container-logo {

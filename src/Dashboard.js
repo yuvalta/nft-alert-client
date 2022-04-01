@@ -14,6 +14,8 @@ function Dashboard() {
     setLoggedIn,
     setAssetsList,
     assetsList,
+    setCollectionsList,
+    collectionsList,
     setError,
     error,
     userName,
@@ -69,7 +71,15 @@ function Dashboard() {
                       upsertAsset(assetUrl)
                     }
                   }}>
-                    Send
+                    Send Asset
+                  </Button>
+                  <Button variant="contained" className='button' onClick={(e) => {
+                    e.preventDefault();
+                    if (validateAssetURL(assetUrl)) {
+                      upsertCollection(assetUrl)
+                    }
+                  }}>
+                    Send Collection
                   </Button>
 
                   <Button variant="contained" className='button' onClick={(e) => {
@@ -99,13 +109,13 @@ function Dashboard() {
                     e.preventDefault();
                     getListFromDB(userEmail)
                   }}>
-                    List
+                    Refresh lists
                   </Button>
 
                   <Button variant="contained" color="error" className='button' onClick={(e) => {
                     e.preventDefault();
 
-                    explodeDB(100)
+                    explodeDB(20)
                   }}>
                     EXPLODE!
                   </Button>
@@ -124,7 +134,12 @@ function Dashboard() {
 
         <div className="div-card-content">
           <br/>
-          <AssetItem assets={assetsList} userEmail={userEmail} getUsersFunction={getListFromDB}/>
+          <AssetItem assets={assetsList} userEmail={userEmail} getUsersFunction={getListFromDB} mode="Assets"/>
+        </div>
+
+        <div className="div-card-content">
+          <br/>
+          <AssetItem assets={collectionsList} userEmail={userEmail} getUsersFunction={getListFromDB} mode="Collections"/>
         </div>
       </div>);
   else
@@ -146,7 +161,25 @@ function Dashboard() {
     const upsertParams = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({"url": url, "user_email": userEmail})
+      body: JSON.stringify({"url": url, "user_email": userEmail, "mode": "Assets"})
+    };
+    fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
+      .then(response => response.json())
+      .then(data => {
+        setError(data["error"])
+        setAssetUrl("")
+        getListFromDB(userEmail)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  function upsertCollection(url) {
+    const upsertParams = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({"url": url, "user_email": userEmail, "mode": "Collections"})
     };
     fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
       .then(response => response.json())
@@ -171,22 +204,34 @@ function Dashboard() {
   }
 
   function getListFromDB(userEmail) {
-    const params = {
-      user_email: userEmail,
-    };
-    const options = {
+    const params_assets = {
       method: 'POST',
-      body: JSON.stringify(params),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({"user_email": userEmail, "mode": "Assets"})
     };
 
-    fetch('https://alert-scraper.herokuapp.com/get_assets_for_user/', options)
+    const params_collections = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"user_email": userEmail, "mode": "Collections"})
+    };
+
+    fetch('https://alert-scraper.herokuapp.com/get_assets_for_user/', params_assets)
       .then(response => response.json())
       .then(response => {
         setAssetsList(response)
+      });
+
+    fetch('https://alert-scraper.herokuapp.com/get_assets_for_user/', params_collections)
+      .then(response => response.json())
+      .then(response => {
+        setCollectionsList(response)
       });
   }
 
@@ -195,13 +240,13 @@ function Dashboard() {
     let url = "https://opensea.io/assets/0xed5af388653567af2f388e6224dc7c4b3241c544/"
 
     for (let i = 1; i < num + 1; i++) {
-      upsertAsset(url + (i + 200).toString())
+      upsertAsset(url + (i + 320).toString())
     }
   }
 
   function deleteAll() {
-    console.log("delete all");
-    fetch('https://alert-scraper.herokuapp.com/delete_all')
+    console.log("delete all fro m asset col");
+    fetch('https://alert-scraper.herokuapp.com/delete_all_from_assets_col')
       .then(response => response)
       .then(data => console.log(data))
       .catch((error) => {

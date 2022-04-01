@@ -9,7 +9,7 @@ const AssetItem = props => {
         <Card elevation={4}>
           <CardContent>
               <Typography variant="h5">
-                My assets - {Object.keys(props.assets).length}
+                My {props.mode} - {Object.keys(props.assets).length}
               </Typography>
               <div>
                 {Object.values(props.assets).map(asset =>
@@ -30,6 +30,11 @@ const AssetItem = props => {
                       <Typography variant="body1" color={asset["price"].toString() === "No price!" ? "red" : "green"}>
                         {asset["price"]}
                       </Typography>
+
+                      <Typography variant="body1">
+                        {asset["action"]}
+                      </Typography>
+
                     </Stack>
                   </ListItem>
                 )}

@@ -8,6 +8,7 @@ const UserProvider = ({children}) => {
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [assetsList, setAssetsList] = useState([]);
+  const [collectionsList, setCollectionsList] = useState([]);
   const [error, setError] = useState("");
 
   return (
@@ -24,7 +25,9 @@ const UserProvider = ({children}) => {
         assetsList,
         setAssetsList,
         error,
-        setError
+        setError,
+        setCollectionsList,
+        collectionsList,
       }}
     >
       {children}
