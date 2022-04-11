@@ -31,7 +31,8 @@ function App() {
           onSuccess={(response) => {
             console.log(response);
             setLoggedIn(true)
-            setUserEmail(response.Du.tv)
+            // setUserEmail(response.Du.tv)
+            setUserEmail("940943671250002000")
             setUserName(response.Du.VX)
             navigate('/nft-alert-client/dashboard/');
           }}

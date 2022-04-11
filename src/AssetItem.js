@@ -20,12 +20,12 @@ const AssetItem = props => {
                         <DeleteIcon onClick={(e) => {
                           e.preventDefault();
 
-                          deleteUserFromAsset(asset["url"], props.userEmail, props.getUsersFunction)
+                          deleteUserFromAsset(asset["contract_id"], props.userEmail, props.getUsersFunction)
                         }}/>
                       </IconButton>}>
                     <Stack direction="row" spacing={3}>
                       <a target="_blank"
-                         href={asset["url"]}>{asset["url"]}
+                         href={asset["contract_id"]}>{asset["contract_id"]}
                       </a>
                       <Typography variant="body1" color={asset["price"].toString() === "No price!" ? "red" : "green"}>
                         {asset["price"]}
@@ -49,7 +49,7 @@ const AssetItem = props => {
     const deleteParams = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({"url": assetURL, "user_email": userEmail})
+      body: JSON.stringify({"contract_id": assetURL, "user_email": userEmail})
     };
 
     console.log('deleteParams:', deleteParams);

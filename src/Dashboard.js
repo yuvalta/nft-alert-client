@@ -7,6 +7,7 @@ import {Button, Input, Stack, TextField} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {UserContext} from "./UserContext";
 import {GoogleLogout} from "react-google-login";
+import nftbanklogo from "./assets/nftbank_logo.png"
 
 function Dashboard() {
   const {
@@ -51,7 +52,7 @@ function Dashboard() {
 
               <br/>
               <div>
-                <TextField fullWidth size="small" id="outlined" label="Your email" disabled value={userEmail}
+                <TextField fullWidth size="small" id="outlined" label="Your email" value={userEmail}
                            margin="normal"/>
 
                 <TextField fullWidth size="small" required id="outlined" label="Asset URL" value={assetUrl}
@@ -98,12 +99,12 @@ function Dashboard() {
                     Stop
                   </Button>
 
-                  {/*<Button variant="contained" className='button' onClick={(e) => {*/}
-                  {/*  e.preventDefault();*/}
-                  {/*  startStopLoop("test")*/}
-                  {/*}}>*/}
-                  {/*  Test*/}
-                  {/*</Button>*/}
+                  <Button variant="contained" className='button' onClick={(e) => {
+                    e.preventDefault();
+                    startStopLoop("test")
+                  }}>
+                    Test
+                  </Button>
 
                   <Button variant="contained" className='button' onClick={(e) => {
                     e.preventDefault();
@@ -139,7 +140,13 @@ function Dashboard() {
 
         <div className="div-card-content">
           <br/>
-          <AssetItem assets={collectionsList} userEmail={userEmail} getUsersFunction={getListFromDB} mode="Collections"/>
+          <AssetItem assets={collectionsList} userEmail={userEmail} getUsersFunction={getListFromDB}
+                     mode="Collections"/>
+        </div>
+        <div className="credits-container">
+          <p className="credits-item">All NFT data and analysis is from</p>
+          <a className="credits-item" href="https://nftbank.ai">NFTBank</a>
+          <img className="logo-stam" src={nftbanklogo}/>
         </div>
       </div>);
   else
@@ -151,7 +158,7 @@ function Dashboard() {
 
   function sleep(delay) {
     let start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
+    while (new Date().getTime() < start + delay) ;
     console.log("after")
     logOutUser()
     navigate('/nft-alert-client/');
@@ -161,7 +168,7 @@ function Dashboard() {
     const upsertParams = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({"url": url, "user_email": userEmail, "mode": "Assets"})
+      body: JSON.stringify({"contract_id": url, "user_email": userEmail, "mode": "Assets"})
     };
     fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
       .then(response => response.json())
@@ -179,7 +186,7 @@ function Dashboard() {
     const upsertParams = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({"url": url, "user_email": userEmail, "mode": "Collections"})
+      body: JSON.stringify({"contract_id": url, "user_email": userEmail, "mode": "Collections"})
     };
     fetch('https://alert-scraper.herokuapp.com/upsert_asset/', upsertParams)
       .then(response => response.json())
@@ -256,15 +263,15 @@ function Dashboard() {
 
 
   function validateAssetURL(input_asset_url) {
-    if (input_asset_url.length === 0) {
-      setError("Enter a value")
-      return false
-    } else if (!/[A-Za-z0-9-_]/.test(input_asset_url)) {
-      setError("Only english letters")
-      return false
-    } else {
-      setError("")
-    }
+    // if (input_asset_url.length === 0) {
+    //   setError("Enter a value")
+    //   return false
+    // } else if (!/[A-Za-z0-9-_]/.test(input_asset_url)) {
+    //   setError("Only english letters")
+    //   return false
+    // } else {
+    //   setError("")
+    // }
 
     setAssetUrl(input_asset_url)
     return true
