@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/nft-alert-client/static/css/main.4375873c.css",
-    "main.js": "/nft-alert-client/static/js/main.e811622e.js",
+    "main.css": "/nft-alert-client/static/css/main.c032d4f8.css",
+    "main.js": "/nft-alert-client/static/js/main.589fa05d.js",
     "static/js/787.6c34d59f.chunk.js": "/nft-alert-client/static/js/787.6c34d59f.chunk.js",
+    "static/media/nftbank_logo.png": "/nft-alert-client/static/media/nftbank_logo.8987807306873b10a7ba.png",
     "index.html": "/nft-alert-client/index.html",
-    "main.4375873c.css.map": "/nft-alert-client/static/css/main.4375873c.css.map",
-    "main.e811622e.js.map": "/nft-alert-client/static/js/main.e811622e.js.map",
+    "main.c032d4f8.css.map": "/nft-alert-client/static/css/main.c032d4f8.css.map",
+    "main.589fa05d.js.map": "/nft-alert-client/static/js/main.589fa05d.js.map",
     "787.6c34d59f.chunk.js.map": "/nft-alert-client/static/js/787.6c34d59f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4375873c.css",
-    "static/js/main.e811622e.js"
+    "static/css/main.c032d4f8.css",
+    "static/js/main.589fa05d.js"
   ]
 }
